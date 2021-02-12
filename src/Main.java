@@ -1,42 +1,29 @@
 
+import configuration.PatternToFind;
 import configuration.SheetConfig;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import sheets_analize.SheetsData;
+import sheets_analize.MessageList;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException, InvalidFormatException {
 
         System.out.println("Opening file " + SheetConfig.pathToFile);
         XSSFWorkbook workbook = new XSSFWorkbook(new File(SheetConfig.pathToFile));
-        XSSFSheet sheet = workbook.getSheetAt(SheetConfig.SheetIndex);
-        System.out.println("Opening sheet:" + sheet.getSheetName());
-        int maxRow = sheet.getPhysicalNumberOfRows();
-        System.out.println("Число записей на странице = " + maxRow);
+        List<List<String>> data = MessageList.convertXLSToList(workbook);
+        System.out.println("Ищется " + PatternToFind.getPatternsList());
 
-        XSSFRow row;
-        XSSFCell cell;
-        StringBuilder builder;
+        List<List<String>> filtredData = MessageList.filtredList(data);
 
-        for (int i = 0; i <= maxRow; i++) {
-            row = sheet.getRow(i);
-            if (row == null) {
-                continue;
-            }
-            builder = new StringBuilder();
+        System.out.println("Всего найдено совпадений " + filtredData.size());
 
-            for (int j = SheetConfig.startCellIndex; j <= SheetConfig.stopCellIndex; j++) {
-                cell = row.getCell(j);
-                builder.append(SheetsData.getCellData(cell));
-                builder.append(" || ");
-            }
-            System.out.println(builder.toString());
+        for  (List<String> tmp: filtredData) {
+            System.out.println(tmp);
+        }
+
         }
     }
-}
