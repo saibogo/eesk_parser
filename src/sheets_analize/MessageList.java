@@ -7,8 +7,10 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class MessageList {
     public static List<List<String>> convertXLSToList(XSSFWorkbook workbook) {
@@ -41,6 +43,26 @@ public class MessageList {
     }
 
     public static boolean isPatternFound(List<String> dataList) {
+
+        String dateString = dataList.get(4);
+
+        if (dateString == null || dateString.equals("")) {
+            return false;
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
+        Date dateMessage = Calendar.getInstance().getTime();
+        try {
+            dateMessage = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            System.out.println("!".repeat(SheetConfig.repeatNum));
+            System.out.println("Неправильный формат даты -> " + dateString);
+            return false;
+        }
+        if (dateMessage.getTime() + 23 * 60 * 60 * 1000 < Calendar.getInstance().getTime().getTime()) {
+            return false;
+        }
+
         for (String pattern: PatternToFind.getPatternsList()) {
             for (String str: dataList) {
                 if (str.indexOf(pattern) >= 0) {
