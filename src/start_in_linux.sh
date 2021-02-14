@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-path=/home/saibogo/IdeaProjects/eesk_data_parser
+path=~/IdeaProjects/eesk_data_parser
 poi=/poi-5.0.0
 math=/commons-math3-3.6.1
 xml=/xmlbeans-4.0.0/lib

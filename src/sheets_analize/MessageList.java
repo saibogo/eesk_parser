@@ -44,21 +44,37 @@ public class MessageList {
 
     public static boolean isPatternFound(List<String> dataList) {
 
+        List<DateFormat> dateFormatList = new ArrayList<>();
+        dateFormatList.add(new SimpleDateFormat("E MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH));
+        dateFormatList.add(new SimpleDateFormat("dd.MM.yyyy"));
+        dateFormatList.add(new SimpleDateFormat("dd..MM.yyyy"));
+
         String dateString = dataList.get(4);
+        Date dateMessage = Calendar.getInstance().getTime();
+        boolean foundCorrectFormat = false;
 
         if (dateString == null || dateString.equals("")) {
             return false;
         }
 
-        DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
-        Date dateMessage = Calendar.getInstance().getTime();
-        try {
-            dateMessage = dateFormat.parse(dateString);
-        } catch (ParseException e) {
+
+        for (DateFormat dateFormat: dateFormatList) {
+            try {
+                dateMessage = dateFormat.parse(dateString);
+                foundCorrectFormat = true;
+                break;
+            } catch (ParseException e) {
+                continue;
+            }
+        }
+
+        if (!foundCorrectFormat) {
             System.out.println("!".repeat(SheetConfig.repeatNum));
             System.out.println("Неправильный формат даты -> " + dateString);
             return false;
         }
+
+
         if (dateMessage.getTime() + 23 * 60 * 60 * 1000 < Calendar.getInstance().getTime().getTime()) {
             return false;
         }
