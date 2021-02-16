@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import sheets_analize.EensJson;
 import sheets_analize.MessageList;
 
 import java.io.File;
@@ -85,6 +86,38 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("Ошибка!");
+        }
+
+        fileNotLoaded = true;
+
+        while (fileNotLoaded) {
+            try {
+                System.out.println("=".repeat(SheetConfig.repeatNum));
+                System.out.println("Попытка скачать файл с сервера eens.ru");
+                URL url = new URL(SheetConfig.urlToEensJson);
+                InputStream inputStream = url.openStream();
+                Files.copy(inputStream, new File(SheetConfig.pathToJson).toPath());
+                fileNotLoaded = false;
+            } catch (FileAlreadyExistsException e) {
+                System.out.println("=".repeat(SheetConfig.repeatNum));
+                System.out.println("Удаляем существующий файл");
+                (new File(SheetConfig.pathToJson)).delete();
+            } catch (UnknownHostException e) {
+                System.out.println("Сайт недоступен или отсутствует сетевое соединение");
+                System.exit(0);
+            }
+        }
+
+        List<String> tmp =  EensJson.convertFileToList(SheetConfig.pathToJson);
+        List<List<String>> resultList = EensJson.convertAllJSONToList(tmp);
+        System.out.println("=".repeat(SheetConfig.repeatNum));
+        System.out.println("Всего найдено телефонограмм: " + resultList.size());
+
+        List<List<String>> filtredResultList = EensJson.filtredJSONLIST(resultList);
+        System.out.println("+".repeat(SheetConfig.repeatNum));
+        System.out.println("Всего найдено совпадений " + filtredResultList.size());
+        for(List<String> ls: filtredResultList) {
+            System.out.println(ls);
         }
 
         }

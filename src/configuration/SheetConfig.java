@@ -9,6 +9,9 @@ public class SheetConfig {
     public static final String urlToFile = "https://eesk.ru/upload/site1/info_shutdown.xlsm";
     public static final String pathToResultFile = "/home/saibogo/Рабочий стол/filtred_info.xlsx";
 
+    public static final String urlToEensJson = "https://kostil-maksima.dock7.66bit.ru/home/phonos";
+    public static final String pathToJson = "/home/saibogo/IdeaProjects/eesk_data_parser/data.json";
+
     public static final int SheetIndex = 0;
     public static final int startCellIndex = 0;
     public static final int stopCellIndex = 9;
