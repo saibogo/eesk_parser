@@ -5,12 +5,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SheetConfig {
-    public static final String pathToFile = "/home/saibogo/IdeaProjects/eesk_data_parser/info_shutdown.xlsm";
+    private static final String userDirPath = System.getProperty("user.dir");
+    private static final String userHomePath = System.getProperty("user.home");
     public static final String urlToFile = "https://eesk.ru/upload/site1/info_shutdown.xlsm";
-    public static final String pathToResultFile = "/home/saibogo/Рабочий стол/filtred_info.xlsx";
-
     public static final String urlToEensJson = "https://kostil-maksima.dock7.66bit.ru/home/phonos";
-    public static final String pathToJson = "/home/saibogo/IdeaProjects/eesk_data_parser/data.json";
+
+    public static final String pathToFile;
+    public static final String pathToResultFile;
+    public static final String pathToJson;
+
+    static {
+        pathToFile = userDirPath + "/info_shutdown.xlsm";
+        pathToResultFile = userHomePath + "/filtred_info.xlsx";
+        pathToJson = userDirPath + "/data.json";
+    }
+
 
     public static final int SheetIndex = 0;
     public static final int startCellIndex = 0;

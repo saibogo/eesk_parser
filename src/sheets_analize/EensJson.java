@@ -5,10 +5,10 @@ import configuration.SheetConfig;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class EensJson {
     private static final List<String> tagList = new ArrayList<>(Arrays.asList("num\":", "startDate\":", "endDate\":",
@@ -46,24 +46,26 @@ public class EensJson {
         return result;
     }
 
-    public static List<String> convertJSONToList(String JSONString) {
-        List<String> result = new ArrayList<>();
+    public static Map<String, String> convertJSONToList(String JSONString) {
+        Map<String, String> result = new HashMap<>();
 
 
         int firstIndex = 0;
         int secondIndex = 0;
+        String newTag = "";
 
         for (String tag: tagList) {
             firstIndex = JSONString.indexOf(tag) + tag.length() + 1;
             secondIndex = JSONString.substring(firstIndex + 1).indexOf("\"") + firstIndex;
-            result.add(JSONString.substring(firstIndex , secondIndex + 1));
+            newTag = tag.substring(0, tag.length() - 2);
+            result.put(newTag, JSONString.substring(firstIndex , secondIndex + 1));
         }
 
         return result;
     }
 
-    public static List<List<String>> convertAllJSONToList(List<String> JSONList) {
-        List<List<String>> result = new ArrayList<>();
+    public static List<Map<String, String>> convertAllJSONToList(List<String> JSONList) {
+        List<Map<String, String>> result = new ArrayList<>();
         for(String tmp: JSONList) {
             result.add(convertJSONToList(tmp));
         }
@@ -71,10 +73,22 @@ public class EensJson {
         return result;
     }
 
-    public static boolean isValidRecord(List<String> record) {
+    public static boolean isValidRecord(Map<String, String> record) {
+
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            Date messageDate = dateFormat.parse(record.get("startDate"));
+            if (messageDate.getTime() + 23 * 60 * 60 * 1000 < Calendar.getInstance().getTime().getTime()) {
+                return false;
+            }
+        } catch (ParseException e) {
+            System.out.println("!".repeat(SheetConfig.repeatNum));
+            System.out.println("Неверный формат даты -> " + record.get("startDate"));
+            return false;
+        }
 
         for (String pattern: PatternToFind.getPatternsList()) {
-            for (String str: record) {
+            for (String str: record.values()) {
                 if (str.contains(pattern)) {
                     return true;
                 }
@@ -84,9 +98,9 @@ public class EensJson {
         return false;
     }
 
-    public static List<List<String>> filtredJSONLIST(List<List<String>> recordsList) {
-        List<List<String>> result = new ArrayList<>();
-        for(List<String> record: recordsList) {
+    public static List<Map<String, String>> filtredJSONLIST(List<Map<String, String>> recordsList) {
+        List<Map<String, String>> result = new ArrayList<>();
+        for(Map<String, String> record: recordsList) {
             if (isValidRecord(record)) {
                 result.add(record);
             }

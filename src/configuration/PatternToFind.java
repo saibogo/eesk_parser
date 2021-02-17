@@ -12,6 +12,9 @@ public class PatternToFind {
         patternsList.add("Малышева");
         patternsList.add("Ленина");
         patternsList.add("62/2");
+        patternsList.add("4317");
+        patternsList.add("1018");
+        patternsList.add("1001");
     }
 
     public static List<String> getPatternsList() {
