@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import sheets_analize.EensJson;
 import sheets_analize.MessageList;
 import support_classes.ListRecord;
+import support_classes.MapRecord;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,9 +19,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException, InvalidFormatException {
@@ -66,8 +65,6 @@ public class Main {
         XSSFWorkbook newWorkbook = new XSSFWorkbook();
         XSSFSheet newSheet = newWorkbook.createSheet("Результат выборки");
 
-
-
         fileNotLoaded = true;
 
         while (fileNotLoaded) {
@@ -89,14 +86,14 @@ public class Main {
         }
 
         ListRecord tmp =  EensJson.convertFileToList(SheetConfig.pathToJson);
-        List<Map<String, String>> resultList = EensJson.convertAllJSONToList(tmp.getList());
+        List<MapRecord> resultList = EensJson.convertAllJSONToList(tmp.getList());
         System.out.println("=".repeat(SheetConfig.repeatNum));
         System.out.println("Всего найдено телефонограмм: " + resultList.size());
 
-        List<Map<String, String>> filtredResultList = EensJson.filtredJSONLIST(resultList);
+        List<MapRecord> filtredResultList = EensJson.filtredJSONLIST(resultList);
         System.out.println("+".repeat(SheetConfig.repeatNum));
         System.out.println("Всего найдено совпадений " + filtredResultList.size());
-        for(Map<String, String> map: filtredResultList) {
+        for(MapRecord map: filtredResultList) {
             System.out.println(map);
         }
 
@@ -121,18 +118,15 @@ public class Main {
             }
 
 
-
-
             for (int i = 0; i < filtredResultList.size(); i++) {
                 row = secondSheet.createRow(i);
-                Map<String, String> record = filtredResultList.get(i);
+                MapRecord record = filtredResultList.get(i);
                 int j = 0;
                 for (String str: record.values()) {
                     cell = row.createCell(j);
                     cell.setCellValue(str);
                     j++;
                 }
-
             }
 
             newWorkbook.write(fileOutputStream);

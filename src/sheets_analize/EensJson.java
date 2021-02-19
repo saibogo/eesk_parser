@@ -3,6 +3,7 @@ package sheets_analize;
 import configuration.PatternToFind;
 import configuration.SheetConfig;
 import support_classes.ListRecord;
+import support_classes.MapRecord;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,8 +35,8 @@ public class EensJson {
             System.exit(0);
         }
 
-        int firstIndex = 0;
-        int secondIndex = 0;
+        int firstIndex;
+        int secondIndex;
 
         while (currentJSON.contains("{")) {
             firstIndex = currentJSON.indexOf("{");
@@ -47,13 +48,13 @@ public class EensJson {
         return result;
     }
 
-    public static Map<String, String> convertJSONToList(String JSONString) {
-        Map<String, String> result = new HashMap<>();
+    public static MapRecord convertJSONToList(String JSONString) {
+        MapRecord result = new MapRecord();
 
 
-        int firstIndex = 0;
-        int secondIndex = 0;
-        String newTag = "";
+        int firstIndex;
+        int secondIndex;
+        String newTag;
 
         for (String tag: tagList) {
             firstIndex = JSONString.indexOf(tag) + tag.length() + 1;
@@ -65,8 +66,8 @@ public class EensJson {
         return result;
     }
 
-    public static List<Map<String, String>> convertAllJSONToList(List<String> JSONList) {
-        List<Map<String, String>> result = new ArrayList<>();
+    public static List<MapRecord> convertAllJSONToList(List<String> JSONList) {
+        List<MapRecord> result = new ArrayList<>();
         for(String tmp: JSONList) {
             result.add(convertJSONToList(tmp));
         }
@@ -74,7 +75,7 @@ public class EensJson {
         return result;
     }
 
-    public static boolean isValidRecord(Map<String, String> record) {
+    public static boolean isValidRecord(MapRecord record) {
 
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         try {
@@ -99,9 +100,9 @@ public class EensJson {
         return false;
     }
 
-    public static List<Map<String, String>> filtredJSONLIST(List<Map<String, String>> recordsList) {
-        List<Map<String, String>> result = new ArrayList<>();
-        for(Map<String, String> record: recordsList) {
+    public static List<MapRecord> filtredJSONLIST(List<MapRecord> recordsList) {
+        List<MapRecord> result = new ArrayList<>();
+        for(MapRecord record: recordsList) {
             if (isValidRecord(record)) {
                 result.add(record);
             }

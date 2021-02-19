@@ -28,4 +28,8 @@ public class ListRecord  {
         return this.stringList.get(index);
     }
 
+    @Override
+    public String toString() {
+        return this.stringList.toString();
+    }
 }
