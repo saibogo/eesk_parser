@@ -2,6 +2,7 @@ package sheets_analize;
 
 import configuration.PatternToFind;
 import configuration.SheetConfig;
+import support_classes.ListRecord;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,8 +15,8 @@ public class EensJson {
     private static final List<String> tagList = new ArrayList<>(Arrays.asList("num\":", "startDate\":", "endDate\":",
             "objects\":", "street\":" , "file\":", "link\":"));
 
-    public static  List<String> convertFileToList(String pathtoJson) {
-        List<String> result = new ArrayList<>();
+    public static ListRecord convertFileToList(String pathtoJson) {
+        ListRecord result = new ListRecord();
         String currentJSON = "";
         try {
             System.out.println("=".repeat(SheetConfig.repeatNum));

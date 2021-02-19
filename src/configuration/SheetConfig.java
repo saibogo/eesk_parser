@@ -1,5 +1,6 @@
 package configuration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,14 +11,19 @@ public class SheetConfig {
     public static final String urlToFile = "https://eesk.ru/upload/site1/info_shutdown.xlsm";
     public static final String urlToEensJson = "https://kostil-maksima.dock7.66bit.ru/home/phonos";
 
-    public static final String pathToFile;
-    public static final String pathToResultFile;
-    public static final String pathToJson;
+    public static  String pathToFile;
+    public static  String pathToResultFile;
+    public static  String pathToJson;
 
     static {
         pathToFile = userDirPath + "/info_shutdown.xlsm";
         pathToResultFile = userHomePath + "/filtred_info.xlsx";
         pathToJson = userDirPath + "/data.json";
+
+        String pathSeparator = File.separator;
+        pathToFile = pathToFile.replaceAll("/", pathSeparator);
+        pathToResultFile = pathToResultFile.replaceAll("/", pathSeparator);
+        pathToJson = pathToJson.replaceAll("/", pathSeparator);
     }
 
 

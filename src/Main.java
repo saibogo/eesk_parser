@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import sheets_analize.EensJson;
 import sheets_analize.MessageList;
+import support_classes.ListRecord;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,17 +47,17 @@ public class Main {
         System.out.println("=".repeat(SheetConfig.repeatNum));
         System.out.println("Opening file " + SheetConfig.pathToFile + "\n");
         XSSFWorkbook workbook = new XSSFWorkbook(new File(SheetConfig.pathToFile));
-        List<List<String>> data = MessageList.convertXLSToList(workbook);
+        List<ListRecord> data = MessageList.convertXLSToList(workbook);
 
         System.out.println("+".repeat(SheetConfig.repeatNum));
         System.out.println("Ищется " + PatternToFind.getPatternsList());
 
-        List<List<String>> filtredData = MessageList.filtredList(data);
+        List<ListRecord> filtredData = MessageList.filtredList(data);
 
 
         System.out.println("==".repeat(SheetConfig.repeatNum) + "\nВсего найдено совпадений " + filtredData.size());
 
-        for  (List<String> tmp: filtredData) {
+        for  (ListRecord tmp: filtredData) {
             System.out.println("+".repeat(SheetConfig.repeatNum));
             System.out.println(tmp);
             }
@@ -87,8 +88,8 @@ public class Main {
             }
         }
 
-        List<String> tmp =  EensJson.convertFileToList(SheetConfig.pathToJson);
-        List<Map<String, String>> resultList = EensJson.convertAllJSONToList(tmp);
+        ListRecord tmp =  EensJson.convertFileToList(SheetConfig.pathToJson);
+        List<Map<String, String>> resultList = EensJson.convertAllJSONToList(tmp.getList());
         System.out.println("=".repeat(SheetConfig.repeatNum));
         System.out.println("Всего найдено телефонограмм: " + resultList.size());
 
