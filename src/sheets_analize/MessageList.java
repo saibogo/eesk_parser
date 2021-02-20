@@ -2,12 +2,16 @@ package sheets_analize;
 
 import configuration.PatternToFind;
 import configuration.SheetConfig;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import support_classes.ExitStatus;
 import support_classes.ListRecord;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,7 +79,6 @@ public class MessageList {
             return false;
         }
 
-
         if (dateMessage.getTime() + 23 * 60 * 60 * 1000 < Calendar.getInstance().getTime().getTime()) {
             return false;
         }
@@ -97,6 +100,35 @@ public class MessageList {
                 result.add(tmp);
             }
         }
+        return result;
+    }
+
+    public static List<ListRecord> parseOnFileEESK() {
+        List<ListRecord> result;
+
+        System.out.println("=".repeat(SheetConfig.repeatNum));
+        System.out.println("Opening file " + SheetConfig.pathToFile + "\n");
+        XSSFWorkbook workbook = null;
+
+        try {
+            workbook = new XSSFWorkbook(new File(SheetConfig.pathToFile));
+        } catch (IOException e) {
+            System.out.println("!".repeat(SheetConfig.repeatNum));
+            System.out.println(ExitStatus.ERROR_OPEN_FILE + " " + SheetConfig.pathToFile);
+            System.exit(ExitStatus.ERROR_OPEN_FILE.ordinal());
+        } catch (InvalidFormatException e) {
+            System.out.println("!".repeat(SheetConfig.repeatNum));
+            System.out.println(ExitStatus.ERROR_FILE_FORMAT + " " + SheetConfig.pathToFile);
+            System.exit(ExitStatus.ERROR_FILE_FORMAT.ordinal());
+        }
+
+        List<ListRecord> data = MessageList.convertXLSToList(workbook);
+
+        System.out.println("+".repeat(SheetConfig.repeatNum));
+        System.out.println("Ищется " + PatternToFind.getPatternsList());
+
+        result = MessageList.filtredList(data);
+
         return result;
     }
 }

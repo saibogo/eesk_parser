@@ -2,6 +2,7 @@ package sheets_analize;
 
 import configuration.PatternToFind;
 import configuration.SheetConfig;
+import support_classes.ExitStatus;
 import support_classes.ListRecord;
 import support_classes.MapRecord;
 
@@ -31,8 +32,8 @@ public class EensJson {
             currentJSON = builder.toString();
         } catch (FileNotFoundException e) {
             System.out.println("!".repeat(SheetConfig.repeatNum));
-            System.out.println("Ошибка открытия файла " + pathtoJson);
-            System.exit(0);
+            System.out.println(ExitStatus.ERROR_OPEN_FILE + " " + pathtoJson);
+            System.exit(ExitStatus.ERROR_OPEN_FILE.ordinal());
         }
 
         int firstIndex;
@@ -107,6 +108,19 @@ public class EensJson {
                 result.add(record);
             }
         }
+
+        return result;
+    }
+
+    public static List<MapRecord> parseOnFileEENS() {
+        List<MapRecord> result;
+        ListRecord tmp =  EensJson.convertFileToList(SheetConfig.pathToJson);
+        List<MapRecord> resultList = EensJson.convertAllJSONToList(tmp.getList());
+        System.out.println("=".repeat(SheetConfig.repeatNum));
+        System.out.println("Всего найдено телефонограмм: " + resultList.size());
+        System.out.println("+".repeat(SheetConfig.repeatNum));
+        System.out.println("Ищется " + PatternToFind.getPatternsList());
+        result = EensJson.filtredJSONLIST(resultList);
 
         return result;
     }
