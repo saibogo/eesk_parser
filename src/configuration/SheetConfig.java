@@ -16,14 +16,12 @@ public class SheetConfig {
     public static  String pathToJson;
 
     static {
-        pathToFile = userDirPath + "/info_shutdown.xlsm";
-        pathToResultFile = userHomePath + "/filtred_info.xlsx";
-        pathToJson = userDirPath + "/data.json";
 
         String pathSeparator = File.separator;
-        pathToFile = pathToFile.replaceAll("/", pathSeparator);
-        pathToResultFile = pathToResultFile.replaceAll("/", pathSeparator);
-        pathToJson = pathToJson.replaceAll("/", pathSeparator);
+        pathToFile = userDirPath + pathSeparator + "info_shutdown.xlsm";
+        pathToResultFile = userHomePath + pathSeparator + "filtred_info.xlsx";
+        pathToJson = userDirPath + pathSeparator + "data.json";
+        
     }
 
 
