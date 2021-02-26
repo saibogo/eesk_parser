@@ -1,9 +1,8 @@
 @set main=G:\IdeaProject\eesk_parser
 @set poi=\poi-5.0.0
 @set math=\commons-math3-3.6.1
-@set path_to_java="D:\Program Files\Java\jdk-14\bin\java.exe"
 
-%path_to_java% ^
+"D:\Program Files\Java\jdk-14\bin\java.exe" ^
 -Dfile.encoding=UTF-8 ^
 -classpath ^
 %main%\out\production\eesk_parser;^
@@ -20,4 +19,3 @@
 %main%%math%\commons-math3-3.6.1-tools.jar;^
 %main%\xmlbeans-4.0.0\lib\xmlbeans-4.0.0.jar ^
 Main
-pause
