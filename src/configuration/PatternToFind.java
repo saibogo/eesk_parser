@@ -20,7 +20,7 @@ public class PatternToFind {
 
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = builder.parse("patterns.xml");
+            Document document = builder.parse(SheetConfig.pathToPatterns);
             Node root = document.getDocumentElement();
             NodeList nodeList = root.getChildNodes();
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -30,10 +30,10 @@ public class PatternToFind {
                 }
             }
         } catch (ParserConfigurationException | SAXException  e) {
-            System.out.println(ExitStatus.ERROR_FILE_FORMAT + " " + "patterns.xml");
+            System.out.println(ExitStatus.ERROR_FILE_FORMAT + " " + SheetConfig.pathToPatterns);
             System.exit(ExitStatus.ERROR_FILE_FORMAT.ordinal());
         } catch (IOException e) {
-            System.out.println(ExitStatus.ERROR_OPEN_FILE + " " + "patterns.xml");
+            System.out.println(ExitStatus.ERROR_OPEN_FILE + " " + SheetConfig.pathToPatterns);
             System.exit(ExitStatus.ERROR_OPEN_FILE.ordinal());
         }
 
