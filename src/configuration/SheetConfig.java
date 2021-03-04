@@ -14,7 +14,7 @@ public class SheetConfig {
     public static  String pathToFile;
     public static  String pathToResultFile;
     public static  String pathToJson;
-    public static  String pathToPatterns;
+    public static  String pathToPatterns = "";
 
     static {
 
@@ -22,7 +22,6 @@ public class SheetConfig {
         pathToFile = userDirPath + pathSeparator + "info_shutdown.xlsm";
         pathToResultFile = userHomePath + pathSeparator + "filtred_info.xlsx";
         pathToJson = userDirPath + pathSeparator + "data.json";
-        pathToPatterns = "patterns.xml";
     }
 
 

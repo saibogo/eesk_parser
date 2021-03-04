@@ -24,7 +24,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException, InvalidFormatException {
 
-
+        for (String s: args) {
+            SheetConfig.pathToPatterns = s;
+        }
 
         LoadFileOnEESK();
         List<ListRecord> filtredData = MessageList.parseOnFileEESK();
